@@ -6,6 +6,7 @@ import com.taskflow.service4.model.Task;
 import com.taskflow.service4.repository.TaskRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,8 +37,34 @@ public class TaskService {
 
     }
 
-    public void updateTask(){
+    @Async
+    public ResponseEntity<Task> updateTask(TaskDTO taskDTO){
+        Task task = taskRepository.findById(taskDTO.getTaskId()).get();
+        if(taskRepository.existsById(taskDTO.getTaskId())){
+            task.setContent(taskDTO.getContent());
+            task.setStatus(taskDTO.getStatus());
+            taskRepository.save(task);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
 
+    }
+
+    @Async
+    public ResponseEntity<List<TaskDTO>> getUserTasks(Integer userId){
+        List<Task> userTasks = taskRepository.findAllByAssignedToUserId(userId);
+        List<TaskDTO> taskDTOList = userTasks
+                .stream()
+                .map(task -> new TaskDTO(
+                        task.getTaskId(),
+                        task.getContent(),
+                        task.getStatus(),
+                        task.getPriority(),
+                        task.getCreatedByUserId(),
+                        task.getAssignedToUserId(),
+                        task.getCreatedIn(),
+                        task.getDependsOnTaskId()
+                )).collect(Collectors.toList());
+        return new ResponseEntity<>(taskDTOList,HttpStatus.OK);
     }
 
     public ResponseEntity<List<TaskDTO>> getProjectTasks(Integer projectId){
@@ -63,8 +90,12 @@ public class TaskService {
 
     }
 
-    public void assignTask(Integer taskId, Integer userId){
-
+    @Async
+    public ResponseEntity<Object> assignTask(Integer taskId, Integer userId){
+        Task task = taskRepository.findById(taskId).get();
+        task.setAssignedToUserId(userId);
+        taskRepository.save(task);
+        return new ResponseEntity<>("Task assigned successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<Object> deleteTask(Integer taskId){
