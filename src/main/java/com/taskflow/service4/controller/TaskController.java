@@ -1,5 +1,6 @@
 package com.taskflow.service4.controller;
 
+import com.taskflow.service4.dto.TaskAssignmentDTO;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.service.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,15 @@ public class TaskController {
     @GetMapping("/get_project_tasks/{projectId}")
     public ResponseEntity<List<TaskDTO>> getProjectTasks(@PathVariable Integer projectId){
         return taskService.getProjectTasks(projectId);
+    }
+
+    @GetMapping("/get_user_tasks/{userId}")
+    public ResponseEntity<List<TaskDTO>> getUserTasks(@PathVariable Integer userId){
+        return taskService.getUserTasks(userId);
+    }
+
+    @PutMapping("/assign_task")
+    public ResponseEntity<Object> assignTaskToUser(@RequestBody TaskAssignmentDTO taskAssignmentDTO){
+        return taskService.assignTask(taskAssignmentDTO.getTaskId(),taskAssignmentDTO.getUserId());
     }
 }
