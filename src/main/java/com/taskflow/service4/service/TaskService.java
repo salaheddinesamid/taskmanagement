@@ -102,4 +102,19 @@ public class TaskService {
         taskRepository.deleteById(taskId);
         return new ResponseEntity<>("TASK IS DELETED",HttpStatus.OK);
     }
+
+    public Boolean checkSprintCompletion(List<Integer> tasksIds){
+        List<Task> tasks = tasksIds
+                .stream()
+            .map(id-> taskRepository.findById(id).get())
+                .collect(Collectors.toList());
+        int tasksLength = tasks.size();
+        int completedTasks = 0;
+        for (Task task : tasks){
+            if(task.getStatus().equals("COMPLETED")){
+                completedTasks += 1;
+            }
+        }
+        return completedTasks == tasksLength;
+    }
 }
