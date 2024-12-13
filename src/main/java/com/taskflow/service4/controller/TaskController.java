@@ -2,6 +2,7 @@ package com.taskflow.service4.controller;
 
 import com.taskflow.service4.dto.TaskAssignmentDTO;
 import com.taskflow.service4.dto.TaskDTO;
+import com.taskflow.service4.model.Task;
 import com.taskflow.service4.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,11 @@ public class TaskController {
     @PostMapping("/new_task")
     public ResponseEntity<Object> createTask(@RequestBody TaskDTO taskDTO){
         return taskService.createNewTask(taskDTO);
+    }
+
+    @PostMapping("/update_task")
+    public ResponseEntity<Task> updateTask(@RequestBody TaskDTO taskDTO){
+        return taskService.updateTask(taskDTO);
     }
 
     @GetMapping("/get_project_tasks/{projectId}")
