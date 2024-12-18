@@ -43,4 +43,8 @@ public class TaskController {
     public ResponseEntity<Object> assignTaskToUser(@RequestBody TaskAssignmentDTO taskAssignmentDTO){
         return taskService.assignTask(taskAssignmentDTO.getTaskId(),taskAssignmentDTO.getUserId());
     }
+    @GetMapping("/get_tasks_by_creator/{userId}")
+    public ResponseEntity<List<TaskDTO>> getTasksByCreator(@PathVariable Integer userId){
+
+    }
 }

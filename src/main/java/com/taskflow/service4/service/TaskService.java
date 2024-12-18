@@ -1,5 +1,6 @@
 package com.taskflow.service4.service;
 
+import com.taskflow.service4.controller.TaskController;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.model.Priority;
 import com.taskflow.service4.model.Task;
@@ -17,8 +18,9 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskController taskController;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskController taskController) {
         this.taskRepository = taskRepository;
     }
     // Create New task:
@@ -61,6 +63,24 @@ public class TaskService {
                         task.getPriority(),
                         task.getCreatedByUserId(),
                         task.getAssignedToUserId(),
+                        task.getCreatedIn(),
+                        task.getDependsOnTaskId()
+                )).collect(Collectors.toList());
+        return new ResponseEntity<>(taskDTOList,HttpStatus.OK);
+    }
+
+    @Async
+    public ResponseEntity<List<TaskDTO>> getTasksByCreator(Integer userId){
+        List<Task> tasks = taskRepository.findAllByCreatedByUserId(userId);
+        List<TaskDTO> taskDTOList = tasks
+                .stream()
+                .map(task -> new TaskDTO(
+                        task.getTaskId(),
+                        task.getContent(),
+                        task.getStatus(),
+                        task.getPriority(),
+                        task.getAssignedToUserId(),
+                        task.getCreatedByUserId(),
                         task.getCreatedIn(),
                         task.getDependsOnTaskId()
                 )).collect(Collectors.toList());
