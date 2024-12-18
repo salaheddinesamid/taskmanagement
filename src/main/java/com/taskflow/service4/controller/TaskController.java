@@ -45,6 +45,6 @@ public class TaskController {
     }
     @GetMapping("/get_tasks_by_creator/{userId}")
     public ResponseEntity<List<TaskDTO>> getTasksByCreator(@PathVariable Integer userId){
-
+        return taskService.getTasksByCreator(userId);
     }
 }

@@ -1,6 +1,5 @@
 package com.taskflow.service4.service;
 
-import com.taskflow.service4.controller.TaskController;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.model.Priority;
 import com.taskflow.service4.model.Task;
@@ -18,9 +17,7 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskController taskController;
-
-    public TaskService(TaskRepository taskRepository, TaskController taskController) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
     // Create New task:
