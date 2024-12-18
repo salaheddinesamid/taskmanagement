@@ -1,25 +1,28 @@
 package com.taskflow.service4.dto;
 
 import lombok.Data;
-import org.springframework.security.core.userdetails.User;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
-public class UserDTO {
 
-    private Integer userId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String role;
+public class UserDetailsDTO {
 
-    public UserDTO(
-            Integer userId,
+    Integer userID;
+    String firstName;
+    String lastName;
+    String email;
+    String password;
+    String role;
+
+    public UserDetailsDTO(
+            Integer userID,
             String firstName,
             String lastName,
             String email,
             String role
     ){
-        this.userId = userId;
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

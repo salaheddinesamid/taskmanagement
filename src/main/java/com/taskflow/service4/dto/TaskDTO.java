@@ -2,6 +2,7 @@ package com.taskflow.service4.dto;
 
 import com.taskflow.service4.model.Task;
 import lombok.Data;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ public class TaskDTO {
     String priority;
     Date createdIn;
     Integer createdByUserId;
-    Integer assignedToUserId;
+    UserDetailsDTO assignedToUser;
     Integer dependsOnTaskId;
 
     public TaskDTO(
@@ -23,11 +24,11 @@ public class TaskDTO {
             String status,
             String priority,
             Integer createdByUserId,
-            Integer assignedToUserId,
+            UserDetailsDTO assignedToUserId,
             Date createdIn,
             Integer dependsOnTaskId
     ){
-        this.assignedToUserId  = assignedToUserId;
+        this.assignedToUser  = assignedToUserId;
         this.content = content;
         this.taskId = taskId;
         this.status = status;

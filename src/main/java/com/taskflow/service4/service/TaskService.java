@@ -1,13 +1,18 @@
 package com.taskflow.service4.service;
 
 import com.taskflow.service4.dto.TaskDTO;
+import com.taskflow.service4.dto.UserDetailsDTO;
 import com.taskflow.service4.model.Priority;
 import com.taskflow.service4.model.Task;
 import com.taskflow.service4.repository.TaskRepository;
+import org.apache.catalina.User;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +20,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
+    String userServiceURL = "http://localhost:8080/api/user/get_user_details/";
 
     private final TaskRepository taskRepository;
-    public TaskService(TaskRepository taskRepository) {
+    private final RestTemplate restTemplate;
+    public TaskService(TaskRepository taskRepository, RestTemplate restTemplate) {
         this.taskRepository = taskRepository;
+        this.restTemplate = restTemplate;
     }
     // Create New task:
 
@@ -51,6 +59,16 @@ public class TaskService {
     @Async
     public ResponseEntity<List<TaskDTO>> getUserTasks(Integer userId){
         List<Task> userTasks = taskRepository.findAllByAssignedToUserId(userId);
+        String url = userServiceURL + userId;
+        ResponseEntity<UserDetailsDTO> data = restTemplate
+                .exchange(
+                        userServiceURL,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<UserDetailsDTO>() {
+                        }
+                );
+        UserDetailsDTO userDetailsDTO = data.getBody();
         List<TaskDTO> taskDTOList = userTasks
                 .stream()
                 .map(task -> new TaskDTO(
@@ -59,7 +77,7 @@ public class TaskService {
                         task.getStatus(),
                         task.getPriority(),
                         task.getCreatedByUserId(),
-                        task.getAssignedToUserId(),
+                        userDetailsDTO,
                         task.getCreatedIn(),
                         task.getDependsOnTaskId()
                 )).collect(Collectors.toList());
@@ -69,6 +87,9 @@ public class TaskService {
     @Async
     public ResponseEntity<List<TaskDTO>> getTasksByCreator(Integer userId){
         List<Task> tasks = taskRepository.findAllByCreatedByUserId(userId);
+        String url = userServiceURL +
+        ResponseEntity<UserDetailsDTO> data =
+        UserDetailsDTO userDetailsDTO =
         List<TaskDTO> taskDTOList = tasks
                 .stream()
                 .map(task -> new TaskDTO(
@@ -76,8 +97,8 @@ public class TaskService {
                         task.getContent(),
                         task.getStatus(),
                         task.getPriority(),
-                        task.getAssignedToUserId(),
                         task.getCreatedByUserId(),
+                        task.getAssignedToUserId(),
                         task.getCreatedIn(),
                         task.getDependsOnTaskId()
                 )).collect(Collectors.toList());
