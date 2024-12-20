@@ -56,6 +56,7 @@ public class TaskService {
 
     }
 
+    /*
     @Async
     public ResponseEntity<List<TaskDTO>> getUserTasks(Integer userId){
         List<Task> userTasks = taskRepository.findAllByAssignedToUserId(userId);
@@ -82,28 +83,7 @@ public class TaskService {
                         task.getDependsOnTaskId()
                 )).collect(Collectors.toList());
         return new ResponseEntity<>(taskDTOList,HttpStatus.OK);
-    }
-
-    @Async
-    public ResponseEntity<List<TaskDTO>> getTasksByCreator(Integer userId){
-        List<Task> tasks = taskRepository.findAllByCreatedByUserId(userId);
-        String url = userServiceURL +
-        ResponseEntity<UserDetailsDTO> data =
-        UserDetailsDTO userDetailsDTO =
-        List<TaskDTO> taskDTOList = tasks
-                .stream()
-                .map(task -> new TaskDTO(
-                        task.getTaskId(),
-                        task.getContent(),
-                        task.getStatus(),
-                        task.getPriority(),
-                        task.getCreatedByUserId(),
-                        task.getAssignedToUserId(),
-                        task.getCreatedIn(),
-                        task.getDependsOnTaskId()
-                )).collect(Collectors.toList());
-        return new ResponseEntity<>(taskDTOList,HttpStatus.OK);
-    }
+    }*/
 
     public ResponseEntity<List<TaskDTO>> getProjectTasks(Integer projectId){
        List<Task> tasks = taskRepository.findAllByProjectId(projectId);

@@ -15,7 +15,7 @@ public class TaskDTO {
     String priority;
     Date createdIn;
     Integer createdByUserId;
-    UserDetailsDTO assignedToUser;
+    Integer assignedToUser;
     Integer dependsOnTaskId;
 
     public TaskDTO(
@@ -24,7 +24,7 @@ public class TaskDTO {
             String status,
             String priority,
             Integer createdByUserId,
-            UserDetailsDTO assignedToUserId,
+            Integer assignedToUserId,
             Date createdIn,
             Integer dependsOnTaskId
     ){
