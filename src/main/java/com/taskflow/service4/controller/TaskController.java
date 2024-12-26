@@ -34,11 +34,10 @@ public class TaskController {
         return taskService.getProjectTasks(projectId);
     }
 
-    /*
     @GetMapping("/get_user_tasks/{userId}")
     public ResponseEntity<List<TaskDTO>> getUserTasks(@PathVariable Integer userId){
         return taskService.getUserTasks(userId);
-    }*/
+    }
 
     @PutMapping("/assign_task")
     public ResponseEntity<Object> assignTaskToUser(@RequestBody TaskAssignmentDTO taskAssignmentDTO){

@@ -56,20 +56,20 @@ public class TaskService {
 
     }
 
-    /*
+
     @Async
     public ResponseEntity<List<TaskDTO>> getUserTasks(Integer userId){
         List<Task> userTasks = taskRepository.findAllByAssignedToUserId(userId);
         String url = userServiceURL + userId;
-        ResponseEntity<UserDetailsDTO> data = restTemplate
+        ResponseEntity<UserDetailsDTO> assignedToData = restTemplate
                 .exchange(
-                        userServiceURL,
+                        url,
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<UserDetailsDTO>() {
                         }
                 );
-        UserDetailsDTO userDetailsDTO = data.getBody();
+        UserDetailsDTO assignedTo = assignedToData.getBody();
         List<TaskDTO> taskDTOList = userTasks
                 .stream()
                 .map(task -> new TaskDTO(
@@ -78,12 +78,12 @@ public class TaskService {
                         task.getStatus(),
                         task.getPriority(),
                         task.getCreatedByUserId(),
-                        userDetailsDTO,
+                        assignedTo.getUserID(),
                         task.getCreatedIn(),
                         task.getDependsOnTaskId()
                 )).collect(Collectors.toList());
         return new ResponseEntity<>(taskDTOList,HttpStatus.OK);
-    }*/
+    }
 
     public ResponseEntity<List<TaskDTO>> getProjectTasks(Integer projectId){
        List<Task> tasks = taskRepository.findAllByProjectId(projectId);
