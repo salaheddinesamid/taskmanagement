@@ -1,5 +1,6 @@
 package com.taskflow.service4.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.taskflow.service4.dto.TaskAssignmentDTO;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.model.Task;
@@ -25,7 +26,7 @@ public class TaskController {
     }
 
     @PostMapping("/update_task")
-    public ResponseEntity<Task> updateTask(@RequestBody TaskDTO taskDTO){
+    public ResponseEntity<Task> updateTask(@RequestBody TaskDTO taskDTO) throws JsonProcessingException {
         return taskService.updateTask(taskDTO);
     }
 

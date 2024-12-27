@@ -1,5 +1,7 @@
 package com.taskflow.service4.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taskflow.service4.dto.HistoryDTO;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.dto.UserDetailsDTO;
@@ -8,6 +10,7 @@ import com.taskflow.service4.model.Task;
 import com.taskflow.service4.repository.TaskRepository;
 import org.apache.catalina.User;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +50,7 @@ public class TaskService {
     }
 
     @Async
-    public ResponseEntity<Task> updateTask(TaskDTO taskDTO){
+    public ResponseEntity<Task> updateTask(TaskDTO taskDTO) throws JsonProcessingException {
         Task task = taskRepository.findById(taskDTO.getTaskId()).get();
         HistoryDTO historyDTO = new HistoryDTO();
         if(taskRepository.existsById(taskDTO.getTaskId())){
@@ -60,6 +63,17 @@ public class TaskService {
             historyDTO.setAction(action);
             historyDTO.setActionDate(actionDate);
             historyDTO.setUserId(userId);
+            historyDTO.setProjectId(task.getProjectId());
+            HttpEntity<HistoryDTO> httpEntity = new HttpEntity<>(historyDTO);
+            System.out.println(new ObjectMapper().writeValueAsString(historyDTO));
+            ResponseEntity<Object> response = restTemplate
+                    .exchange(
+                            projectServiceURL + "/new_history",
+                            HttpMethod.POST,
+                            httpEntity,
+                            new ParameterizedTypeReference<Object>() {
+                            }
+                    );
         }
         return new ResponseEntity<>(task, HttpStatus.OK);
 
