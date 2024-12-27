@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     String userServiceURL = "http://localhost:8080/api/user/get_user_details/";
-
+    String projectServiceURL = "http://localhost:9001/api/project";
     private final TaskRepository taskRepository;
     private final RestTemplate restTemplate;
     public TaskService(TaskRepository taskRepository, RestTemplate restTemplate) {
@@ -51,11 +51,15 @@ public class TaskService {
         Task task = taskRepository.findById(taskDTO.getTaskId()).get();
         HistoryDTO historyDTO = new HistoryDTO();
         if(taskRepository.existsById(taskDTO.getTaskId())){
-            Date actionDate  = new Date();
-            UserDetailsDTO
             task.setContent(taskDTO.getContent());
             task.setStatus(taskDTO.getStatus());
             taskRepository.save(task);
+            Date actionDate  = new Date();
+            Integer userId = task.getAssignedToUserId();
+            String action = "UPDATE TASK";
+            historyDTO.setAction(action);
+            historyDTO.setActionDate(actionDate);
+            historyDTO.setUserId(userId);
         }
         return new ResponseEntity<>(task, HttpStatus.OK);
 

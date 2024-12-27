@@ -8,19 +8,19 @@ import java.util.Date;
 public class HistoryDTO {
 
     private Date actionDate;
-    private UserDetailsDTO userDTO;
+    private Integer userId;
     private String action;
     private Integer projectId;
-
+    /*
     public HistoryDTO(
             Date actionDate,
-            UserDetailsDTO userDTO,
+            Integer userId,
             String action,
             Integer projectId
     ){
         this.actionDate = actionDate;
-        this.userDTO = userDTO;
+        this.userId = userId;
         this.action = action;
         this.projectId = projectId;
-    }
+    }*/
 }

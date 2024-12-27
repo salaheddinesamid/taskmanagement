@@ -15,6 +15,7 @@ public class UserDetailsDTO {
     String password;
     String role;
 
+
     public UserDetailsDTO(
             Integer userID,
             String firstName,
