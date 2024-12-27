@@ -1,5 +1,6 @@
 package com.taskflow.service4.service;
 
+import com.taskflow.service4.dto.HistoryDTO;
 import com.taskflow.service4.dto.TaskDTO;
 import com.taskflow.service4.dto.UserDetailsDTO;
 import com.taskflow.service4.model.Priority;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +49,10 @@ public class TaskService {
     @Async
     public ResponseEntity<Task> updateTask(TaskDTO taskDTO){
         Task task = taskRepository.findById(taskDTO.getTaskId()).get();
+        HistoryDTO historyDTO = new HistoryDTO();
         if(taskRepository.existsById(taskDTO.getTaskId())){
+            Date actionDate  = new Date();
+            UserDetailsDTO
             task.setContent(taskDTO.getContent());
             task.setStatus(taskDTO.getStatus());
             taskRepository.save(task);
